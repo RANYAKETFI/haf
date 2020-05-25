@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:haf/profilVolunteer.dart';
+import 'package:haf/services/auth.dart';
 import 'package:haf/signin.dart';
 
-class Chose extends StatefulWidget {
+class ChoseProfil extends StatefulWidget {
   @override
-  _ChoseState createState() => _ChoseState();
+  _ChoseProfilState createState() => _ChoseProfilState();
 }
 
-class _ChoseState extends State<Chose> {
+class _ChoseProfilState extends State<ChoseProfil> {
   @override
+
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
@@ -32,7 +34,7 @@ class _ChoseState extends State<Chose> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Association()),
+                              builder: (context) => NewAssociation()),
                         );
                       }, //since this is only a UI app
                       child: Text(
@@ -58,7 +60,7 @@ class _ChoseState extends State<Chose> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NewAccount()),
+                          MaterialPageRoute(builder: (context) => NewVolunteer()),
                         );
                       }, //since this is only a UI app
                       child: Text(
@@ -85,12 +87,22 @@ class _ChoseState extends State<Chose> {
   }
 }
 
-class NewAccount extends StatefulWidget {
-  @override
-  _NewAccountState createState() => _NewAccountState();
-}
 
-class _NewAccountState extends State<NewAccount> {
+class NewVolunteer extends StatefulWidget {
+  @override
+  _NewVolunteerState createState() => _NewVolunteerState();
+  }
+  
+
+class _NewVolunteerState extends State<NewVolunteer> {
+  final AuthService _auth=AuthService();
+  final _formKey=GlobalKey<FormState>();
+   String email="";
+  String password="";
+  String username="";
+  String phone="";
+    String erreur="";
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -108,7 +120,9 @@ class _NewAccountState extends State<NewAccount> {
                 Container(
                     // alignment: Alignment.center,
 
-                    child: Column(
+                    child:Form(
+                      key: _formKey,
+                      child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -119,7 +133,11 @@ class _NewAccountState extends State<NewAccount> {
                         image: AssetImage('assets/logo.jpg'),
                         height: 70,
                         width: 70)),
-                TextFormField(
+                TextFormField( 
+                  validator: (val)=>val.isEmpty ? 'Enter an email':null,
+                  onChanged: (val){
+setState(()=>username=val);
+                                        },
                   style: TextStyle(
                     color: Colors.blueGrey,
                   ),
@@ -132,6 +150,9 @@ class _NewAccountState extends State<NewAccount> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                   onChanged: (val){
+setState(()=>email=val);
+                                        },
                   style: TextStyle(
                     color: Colors.blueGrey,
                   ),
@@ -144,6 +165,11 @@ class _NewAccountState extends State<NewAccount> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+            validator: (val)=>val.length<6 ? 'password must have at least 6 caracters':null,
+
+                   onChanged: (val){
+setState(()=>password=val);
+                                        },
                   style: TextStyle(
                     color: Colors.blueGrey,
                   ),
@@ -156,6 +182,9 @@ class _NewAccountState extends State<NewAccount> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
+                   onChanged: (val){
+setState(()=>phone=val);
+                                        },
                   style: TextStyle(
                     color: Colors.blueGrey,
                   ),
@@ -170,11 +199,27 @@ class _NewAccountState extends State<NewAccount> {
                 Padding(
                     padding: EdgeInsets.only(top: 10),
                     child: MaterialButton(
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async {
+if(_formKey.currentState.validate())
+{ 
+dynamic result=await _auth.volunteerregister(email.toString().trim(),password.toString().trim());
+if(result==null)
+{
+  print("erreur ");
+  setState(() { erreur=" Registration failed";
+  });
+}
+// a valid form 
+}
+else {
+  //not valid 
+
+}
+
+                      /*  Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => Profil()),
-                        );
+                        );*/
                       }, //since this is only a UI app
                       child: Text(
                         'SIGN UP',
@@ -193,21 +238,22 @@ class _NewAccountState extends State<NewAccount> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                     )),
+                    SizedBox(height:30), Text(erreur),
               ],
 
               //  )
-            ))),
+            )))),
       ],
     );
   }
 }
 
-class Association extends StatefulWidget {
+class NewAssociation extends StatefulWidget {
   @override
-  _AssociationState createState() => _AssociationState();
+  _NewAssociationState createState() => _NewAssociationState();
 }
 
-class _AssociationState extends State<Association> {
+class _NewAssociationState extends State<NewAssociation> {
   @override
   Widget build(BuildContext context) {
     return Stack(

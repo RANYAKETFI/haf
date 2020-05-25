@@ -1,21 +1,13 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:haf/signin.dart';
+import 'package:haf/services/auth.dart';
 
-import 'new_account.dart';
+import '../../signin.dart';
 
-/*  Color:
-//124565
-//0xff64c4b9*/
-class Profil extends StatelessWidget {
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'welcome again',
-      theme: new ThemeData(
-        primarySwatch: Colors.blueGrey,
-      ),
-      home: Blog(),
+    return Container(
+      child:Blog(),
     );
   }
 }
@@ -26,6 +18,7 @@ class Blog extends StatefulWidget {
 }
 
 class _BlogState extends State<Blog> {
+  final AuthService _auth=AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,42 +119,24 @@ class _BlogState extends State<Blog> {
                 color: Color(0xff64c4b9),
               ),
             ),
-            //trailing:Icon(Icons.arrow_forward,color: Colors.blueGrey,)
           ),
           SizedBox(height: 100),
-          new ListTile(
-              trailing: Icon(
-                Icons.arrow_back,
-                color: Colors.blueGrey,
-              ),
-              title: Center(
-                  child: MaterialButton(
-                onPressed: () {
-                  
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Signin1()),
-                  );
-                }, //since this is only a UI app
-                child: Text(
-                  'Log Out',
+          Center(
+                child: FlatButton.icon(onPressed: ()async{
+                  print("here");
+                  _auth.signOut();
+                }
+
+                , icon: Icon(Icons.arrow_back), label: Text('Log Out',
                   style: TextStyle(
                     fontSize: 15,
                     fontFamily: 'SFUIDisplay',
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.bold,),
+                    )
+                    ,color:Color(0xff64c4b9),
+                )
+               
                   ),
-                ),
-                color: Color(0xff64c4b9),
-                elevation: 0,
-                height: 60,
-                minWidth: 200,
-
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-              )
-                  //trailing:Icon(Icons.arrow_forward,color: Colors.blueGrey,)
-                  )),
         ]),
       )),
 
