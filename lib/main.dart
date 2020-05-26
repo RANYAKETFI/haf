@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:haf/models/volunteer.dart';
 import 'package:haf/screens/wrapper.dart';
 import 'package:haf/services/auth.dart';
-import 'acc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';

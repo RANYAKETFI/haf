@@ -1,7 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:haf/profilVolunteer.dart';
+import 'package:haf/models/volunteer.dart';
 import 'package:haf/services/auth.dart';
-import 'package:haf/signin.dart';
+import 'package:haf/services/database.dart';
 
 class ChoseProfil extends StatefulWidget {
   @override
@@ -96,7 +97,10 @@ class NewVolunteer extends StatefulWidget {
 
 class _NewVolunteerState extends State<NewVolunteer> {
   final AuthService _auth=AuthService();
+  FirebaseUser user;
+  UserData user1=UserData();
   final _formKey=GlobalKey<FormState>();
+  String uid="";
    String email="";
   String password="";
   String username="";
@@ -209,17 +213,16 @@ if(result==null)
   setState(() { erreur=" Registration failed";
   });
 }
-// a valid form 
+else
+{
+  //uid=user.
+//user1=UserData();
+}
 }
 else {
   //not valid 
 
 }
-
-                      /*  Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Profil()),
-                        );*/
                       }, //since this is only a UI app
                       child: Text(
                         'SIGN UP',
@@ -255,21 +258,23 @@ class NewAssociation extends StatefulWidget {
 
 class _NewAssociationState extends State<NewAssociation> {
   @override
+  final AuthService _auth=AuthService();
+  // text state 
+  String email="";
+  String password="";
+    String username="";
+  String phone="";
+
+  String erreur="";
+  final _formkey=GlobalKey<FormState>();
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        /*  Container(
-           decoration: BoxDecoration(
-             image: DecorationImage(image: AssetImage("assets/bg5.jpg"
-             ),
-             fit: BoxFit.cover,
-           )
-         )),*/
+    
         Scaffold(
             backgroundColor: Colors.white, // <-- SCAFFOLD WITH TRANSPARENT BG
             body: // Center(child:
                 Container(
-                    // alignment: Alignment.center,
 
                     child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -346,10 +351,7 @@ class _NewAssociationState extends State<NewAssociation> {
                     padding: EdgeInsets.only(top: 10),
                     child: MaterialButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Profil()),
-                        );
+                        
                       }, //since this is only a UI app
                       child: Text(
                         'SIGN UP',

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:haf/models/volunteer.dart';
 import 'package:haf/screens/home/authenticate/sign_in.dart';
+import 'package:haf/services/database.dart';
 class AuthService
 {
   final FirebaseAuth _auth=FirebaseAuth.instance;
@@ -8,7 +9,7 @@ class AuthService
 Volunteer _volunteerFromFirebase(FirebaseUser user){
 if(user!=null)
 {
-  return(Volunteer(uid:user.uid));
+  return(Volunteer(uid:user.uid,email:user.email));
 
 }
 else {
@@ -61,6 +62,8 @@ Future signIn(String email,String password) async
  try {
     AuthResult result= await _auth.signInWithEmailAndPassword(email: email, password: password) ;
 FirebaseUser user=result.user;
+    //  await DataBaseService(uid : user.uid).updateExperience('photo_url', 'hheeelllloooo ', 'uid');
+
   Volunteer v=_volunteerFromFirebase(user);
 return v;
   } 
